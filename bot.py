@@ -52,6 +52,7 @@ class RoomBot:
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//font[text()='ליחצו כאן לאימות ת.ז.']"))).click()
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'zehut2'))).send_keys(self.id_list[6])
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//font[text()='ליחצו כאן לאימות ת.ז.']"))).click()
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[@text()='המשך']"))).click()
 
     def run(self):
         self.choose_library()
