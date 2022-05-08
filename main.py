@@ -1,4 +1,5 @@
 from bot import RoomBot
+from datetime import date
 
 
 def main():
@@ -7,7 +8,14 @@ def main():
                "318911088", "318323540"]
     my_email = input("Enter your email address: \n")  # add your email
     my_password = input("Enter your password: \n")  # add your password
-    rb = RoomBot(id_list, my_email, my_password, 12)
+
+    # Obtaining desired date
+    today = date.today()
+    d1 = today.strftime("%d/%m/%Y")
+    day = int(d1[0:2]) + 6
+
+    # Creating and running the bot
+    rb = RoomBot(id_list, my_email, my_password, day)
     rb.run()
 
 
