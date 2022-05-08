@@ -18,7 +18,7 @@ class RoomBot:
         self.driver = setup()
         self.user_email = user_email
         self.user_password = user_password
-        self.ID_list = id_list
+        self.id_list = id_list
         self.day = day
 
     def login(self):
@@ -42,14 +42,21 @@ class RoomBot:
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[@day='12']"))).click()
 
     def choose_rooms(self):
-        # WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//checkbox[@value='14,121']"))).click()
-        # WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//checkbox[@value='15,121']"))).click()
-        # WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//checkbox[@value='16,121']"))).click()
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//checkbox[@value='14,121']"))).click()
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//checkbox[@value='15,121']"))).click()
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//checkbox[@value='16,121']"))).click()
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[@text()='המשך']"))).click()
+
+    def enter_ids(self):
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'zehut1'))).send_keys(self.id_list[6])
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//font[text()='ליחצו כאן לאימות ת.ז.']"))).click()
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'zehut2'))).send_keys(self.id_list[6])
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//font[text()='ליחצו כאן לאימות ת.ז.']"))).click()
 
     def run(self):
         self.choose_library()
         self.choose_date()
-        # self.choose_rooms()
+        self.choose_rooms()
+        self.enter_ids()
         time.sleep(100)
 
