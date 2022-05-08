@@ -22,6 +22,8 @@ class RoomBot:
         self.day = day
 
     def login(self):
+
+        # Choosing the log by email option
         time.sleep(2)
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'pills-email-tab'))).click()
 
@@ -58,11 +60,13 @@ class RoomBot:
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'next'))).click()
 
     def choose_date(self):
+
         # Choose the date of order
         time.sleep(2)
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[@day='12']"))).click()
 
     def choose_rooms(self):
+
         # Choose room 1
         time.sleep(2)
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//input[@value='14,121']"))).click()
@@ -80,9 +84,9 @@ class RoomBot:
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, 'next1'))).click()
 
     def enter_ids(self):
-        time.sleep(3)
 
         # Entering first id
+        time.sleep(3)
         for digit in self.id_list[6]:
             WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'zehut1'))).send_keys(digit)
             time.sleep(0.3)
@@ -93,7 +97,7 @@ class RoomBot:
 
         # Entering second id
         time.sleep(3)
-        for digit in self.id_list[6]:
+        for digit in self.id_list[10]:
             WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'zehut2'))).send_keys(digit)
             time.sleep(0.3)
 
@@ -110,4 +114,3 @@ class RoomBot:
         self.choose_date()
         self.choose_rooms()
         self.enter_ids()
-        time.sleep(100)
