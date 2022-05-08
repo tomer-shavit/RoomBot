@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-from datetime import date
+# from datetime import date
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
@@ -22,12 +22,29 @@ class RoomBot:
         self.day = day
 
     def login(self):
+        time.sleep(2)
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'pills-email-tab'))).click()
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'username'))).send_keys(self.user_email)  # add email instead of empty string
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'password'))).send_keys(self.user_password)  # add password instead of empty string
+
+        # Now entering email character by character
+        for char in self.user_email:
+            WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'username'))).send_keys(char)
+            time.sleep(0.3)
+
+        time.sleep(3)
+
+        # Now entering password character by character
+        for char in self.user_password:
+            WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'password'))).send_keys(char)
+            time.sleep(0.3)
+
+        time.sleep(2)
+
+        # Now login
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//button[contains(., "Enter")]'))).click()
 
     def open_website(self):
+
+        # Open website
         self.driver.get('https://www.huji.ac.il/rooms/')
         self.driver.maximize_window()
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'open_pop'))).click()
@@ -35,24 +52,58 @@ class RoomBot:
     def choose_library(self):
         self.open_website()
         self.login()
+
+        # Choose the library and proceed the order
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//label[text()='בית הספר להנדסה ולמדעי המחשב']"))).click()
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'next'))).click()
 
     def choose_date(self):
+        # Choose the date of order
+        time.sleep(2)
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[@day='12']"))).click()
 
     def choose_rooms(self):
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//checkbox[@value='14,121']"))).click()
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//checkbox[@value='15,121']"))).click()
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//checkbox[@value='16,121']"))).click()
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[@text()='המשך']"))).click()
+        # Choose room 1
+        time.sleep(2)
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//input[@value='14,121']"))).click()
+
+        # Choose room 2
+        time.sleep(2)
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//input[@value='15,121']"))).click()
+
+        # Choose room 3
+        time.sleep(2)
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//input[@value='16,121']"))).click()
+
+        # Proceed the booking to the id's stage
+        time.sleep(1)
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, 'next1'))).click()
 
     def enter_ids(self):
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'zehut1'))).send_keys(self.id_list[6])
+        time.sleep(3)
+
+        # Entering first id
+        for digit in self.id_list[6]:
+            WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'zehut1'))).send_keys(digit)
+            time.sleep(0.3)
+
+        # Validating id
+        time.sleep(2)
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//font[text()='ליחצו כאן לאימות ת.ז.']"))).click()
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'zehut2'))).send_keys(self.id_list[6])
+
+        # Entering second id
+        time.sleep(3)
+        for digit in self.id_list[6]:
+            WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'zehut2'))).send_keys(digit)
+            time.sleep(0.3)
+
+        # Validating id
+        time.sleep(2)
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//font[text()='ליחצו כאן לאימות ת.ז.']"))).click()
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[@text()='המשך']"))).click()
+
+        # Finnish booking the room
+        time.sleep(2)
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'next'))).click()
 
     def run(self):
         self.choose_library()
@@ -60,4 +111,3 @@ class RoomBot:
         self.choose_rooms()
         self.enter_ids()
         time.sleep(100)
-
